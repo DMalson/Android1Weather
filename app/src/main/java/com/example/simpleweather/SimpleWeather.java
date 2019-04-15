@@ -10,36 +10,67 @@ import android.widget.TextView;
 public class SimpleWeather extends AppCompatActivity {
     private String locationName;
     private String temperature;
+    private final String LOCATION ="Location";
+    private final String TEMPERATURE = "Temperature";
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        locationName=savedInstanceState.getString(LOCATION);
+        temperature=savedInstanceState.getString(TEMPERATURE);
+        setValues();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString(LOCATION,locationName);
+        savedInstanceState.putString(TEMPERATURE,temperature);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simpleweather);
 
-        final TextView locationView = findViewById(R.id.textLocation);
-        final TextView temperatureView = findViewById(R.id.textTemperature);
-
-        final Resources res = this.getApplicationContext().getResources();
-        if (savedInstanceState==null){
-            locationView.setText(res.getString(R.string.location1));
-            temperatureView.setText(res.getString(R.string.temp1));
+        if (savedInstanceState==null) {
+            initValues();
+            setValues();
         }
+
         Button button1 = findViewById(R.id.testChange);
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (locationView.getText().equals(res.getString(R.string.location1))) {
-                    locationView.setText(res.getString(R.string.location2));
-                    temperatureView.setText(res.getString(R.string.temp2));
-                } else {
-                    locationView.setText(res.getString(R.string.location1));
-                    temperatureView.setText(res.getString(R.string.temp1));
-                }
+                getValues();
+                setValues();
             }
         });
-
     }
 
+    protected void getValues(){
+        final Resources res = getApplicationContext().getResources();
+        if (locationName.equals(res.getString(R.string.location1))) {
+            locationName=res.getString(R.string.location2);
+            temperature=res.getString(R.string.temp2);
+        } else {
+            locationName=res.getString(R.string.location1);
+            temperature=res.getString(R.string.temp1);
+        }
+    }
+
+    protected void initValues(){
+        final Resources res = getApplicationContext().getResources();
+        locationName=res.getString(R.string.location1);
+        temperature=res.getString(R.string.temp1);
+    }
+
+    protected void setValues(){
+        final TextView locationView = findViewById(R.id.textLocation);
+        final TextView temperatureView = findViewById(R.id.textTemperature);
+        locationView.setText(locationName);
+        temperatureView.setText(temperature);
+    }
 }
 
 
