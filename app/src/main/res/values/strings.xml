@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SimpleWeather</string>
+    <string name="location1">Москва</string>
+    <string name="location2">Уфа</string>
+    <string name="temp1">12</string>
+    <string name="temp2">-4</string>
 </resources>
